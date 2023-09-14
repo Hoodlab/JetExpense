@@ -1,4 +1,4 @@
-package hoods.com.jetexpense.ui.theme
+package hoods.com.jetexpense.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build
@@ -16,15 +16,21 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = Teal80,
+    secondary = BlueGrey80,
+    tertiary = Orange80,
+    surface = Grey80,
+    primaryContainer = GreyBlue80,
+    background = NavyBlue80
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = Teal40,
+    secondary = BlueGrey40,
+    tertiary = Orange40,
+    surface = Grey40,
+    primaryContainer = GreyBlue40,
+    background = NavyBlue40
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -42,7 +48,7 @@ fun JetExpenseTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {

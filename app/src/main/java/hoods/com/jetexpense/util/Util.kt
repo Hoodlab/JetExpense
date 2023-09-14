@@ -1,6 +1,8 @@
 package hoods.com.jetexpense.util
 
 import androidx.compose.ui.graphics.Color
+import hoods.com.jetexpense.data.local.models.Expense
+import hoods.com.jetexpense.data.local.models.Income
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -54,6 +56,95 @@ fun formatDays(date: Date): String {
     val sdf = SimpleDateFormat("EE", Locale.getDefault())
     return sdf.format(date)
 }
+
+val incomeList = listOf(
+    Income(
+        0,
+        incomeAmount = 1000.0,
+        title = "Freelancing",
+        description = "Payment from upwork project",
+        entryDate =formatDate(date),
+        date = date.time
+    ),
+    Income(
+        1,
+        incomeAmount = 6000.0,
+        title = "Salary",
+        description = "Payment from parmanent job",
+        entryDate =formatDate(date),
+        date = date.time
+    ),
+    Income(
+        2,
+        incomeAmount = 3000.0,
+        title = "Side project",
+        description = "Payment from upwork project",
+        entryDate =formatDate(date),
+        date = date.time
+    ),
+    Income(
+        3,
+        incomeAmount = 1000.0,
+        title = "Tutor Project",
+        description = "Payment from students for coding session",
+        entryDate =formatDate(date),
+        date = date.time
+    ),
+    Income(
+        4,
+        incomeAmount = 1000.0,
+        title = "Vending Machine",
+        description = "Payment from selling soft drink",
+        entryDate =formatDate(date),
+        date = date.time
+    )
+)
+
+val expenseList = listOf(
+    Expense(
+        entryDate =formatDate(date),
+        expenseAmount = 50.0,
+        category = "entertainment",
+        title = "Netflix Subscription",
+
+        description = "Payed Nexflix for monthly subscription",
+        date = date.time
+    ),
+    Expense(
+        entryDate =formatDate(date),
+        expenseAmount = 100.0,
+        category = "Food and Drinks",
+        title = "Groceries",
+        description = "Payed  for monthly groceries",
+        date = date.time
+    ),
+    Expense(
+        entryDate =formatDate(date),
+        expenseAmount = 500.0,
+        category = "Vehicle",
+        title = "Car Maintenance",
+        description = "Payed  for car tire, brake pad and oil change",
+        date = date.time
+    ),
+    Expense(
+        entryDate =formatDate(date),
+        expenseAmount = 1000.0,
+        category = "Housing",
+        title = "Rent",
+        description = "Payed for monthly rent for apartment",
+        date = date.time
+    ),
+    Expense(
+        entryDate = formatDate(date),
+        expenseAmount = 100.0,
+        category = "Tech",
+        title = "Computer",
+        description = "Purchased a computer for work",
+        date = date.time
+    ),
+
+    )
+
 
 fun getColor(amount: Float, colors: List<Color>): Color {
     return when {

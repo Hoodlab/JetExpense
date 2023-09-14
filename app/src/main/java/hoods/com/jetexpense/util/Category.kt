@@ -2,7 +2,7 @@ package hoods.com.jetexpense.util
 
 import androidx.compose.ui.graphics.Color
 import hoods.com.jetexpense.R
-import hoods.com.jetexpense.ui.theme.*
+import hoods.com.jetexpense.presentation.ui.theme.*
 
 
 enum class Category(
