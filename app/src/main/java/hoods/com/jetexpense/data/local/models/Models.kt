@@ -3,9 +3,7 @@ package hoods.com.jetexpense.data.local.models
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import hoods.com.jetexpense.util.Util
-import hoods.com.jetexpense.util.getColor
-import java.util.*
+import java.util.Date
 
 @Entity(tableName = "expense_table")
 data class Expense(

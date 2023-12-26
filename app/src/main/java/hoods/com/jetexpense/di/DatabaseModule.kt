@@ -2,20 +2,12 @@ package hoods.com.jetexpense.di
 
 import android.content.Context
 import androidx.room.Room
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import hoods.com.jetexpense.data.local.ExpenseDao
-import hoods.com.jetexpense.data.local.IncomeDao
 import hoods.com.jetexpense.data.local.JetExpDatabase
-import hoods.com.jetexpense.data.repository.Repository
-import hoods.com.jetexpense.data.repository.RepositoryImpl
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.Dispatchers
-import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
