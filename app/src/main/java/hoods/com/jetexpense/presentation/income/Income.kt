@@ -4,11 +4,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import hoods.com.jetexpense.data.local.models.Income
 import hoods.com.jetexpense.presentation.components.IncomeRow
 import hoods.com.jetexpense.presentation.components.TransactionStatement
-import hoods.com.jetexpense.presentation.models.IncomeP
 import hoods.com.jetexpense.util.Util
-import hoods.com.jetexpense.util.formatDate
+import hoods.com.jetexpense.util.getColor
 import hoods.com.jetexpense.util.incomeList
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -18,15 +18,15 @@ import java.util.Locale
 @Composable
 fun IncomeScreen(
     modifier: Modifier = Modifier,
-    incomes: List<IncomeP>,
-    onIncomeItemClick: (Id: Int) -> Unit,
+    incomes: List<Income>,
+    onIncomeItemClick: (id: Int) -> Unit,
     onIncomeItemDelete: (Int) -> Unit,
 ) {
     TransactionStatement(
         items = incomes,
-        colors = { it.color },
-        amounts = { it.incomeAmount },
-        amountsTotal = incomes.sumOf { it.incomeAmount.toDouble() }.toFloat(),
+        colors = { getColor(it.incomeAmount.toFloat(),Util.expenseColor) },
+        amounts = { it.incomeAmount.toFloat() },
+        amountsTotal = incomes.sumOf { it.incomeAmount }.toFloat(),
         circleLabel = "Receive",
         onItemSwiped = {
             onIncomeItemDelete.invoke(it.id)
@@ -37,8 +37,8 @@ fun IncomeScreen(
         IncomeRow(
             name = it.title,
             description = "Receive ${formatDetailDate(date = it.date)}",
-            amount = it.incomeAmount,
-            color = it.color,
+            amount = it.incomeAmount.toFloat(),
+            color = getColor(it.incomeAmount.toFloat(),Util.expenseColor),
             modifier = Modifier.clickable {
                 onIncomeItemClick.invoke(it.id)
             }
@@ -55,19 +55,7 @@ fun formatDetailDate(date: Date): String =
 @Composable
 fun PrevIncomeDetail() {
     IncomeScreen(
-        incomes = incomeList.mapIndexed { index, item ->
-            item.run {
-                IncomeP(
-                    id = index,
-                    title = title,
-                    description = description,
-                    incomeAmount = incomeAmount.toFloat(),
-                    entryDate = formatDate(date),
-                    date = date,
-                    color = Util.incomeColor.random()
-                )
-            }
-        },
+        incomes = incomeList,
         onIncomeItemClick = {}
     ) {
 

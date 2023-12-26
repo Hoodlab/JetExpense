@@ -49,7 +49,7 @@ fun JetExpRow(
 
     val tabTintColor by animateColorAsState(
         targetValue = if (selected) color else color.copy(InactiveTabOpacity),
-        animationSpec = animSpec
+        animationSpec = animSpec, label = ""
     )
 
     Row(

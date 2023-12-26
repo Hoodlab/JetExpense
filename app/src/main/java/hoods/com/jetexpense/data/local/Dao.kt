@@ -3,7 +3,6 @@ package hoods.com.jetexpense.data.local
 import androidx.room.*
 import hoods.com.jetexpense.data.local.models.Expense
 import hoods.com.jetexpense.data.local.models.Income
-import hoods.com.jetexpense.data.local.models.WeeklyData
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -26,14 +25,6 @@ interface ExpenseDao {
 
     @Query("SELECT * FROM expense_table WHERE expense_id =:id")
     fun getExpenseById(id: Int): Flow<Expense>
-
-    @Query(
-        """
-        SELECT SUM(expense_amount) AS amount,date AS date FROM expense_table 
-        WHERE entry_date >= date('now','-7 day') GROUP BY entry_date 
-    """
-    )
-    fun getLast7DaysExp(): Flow<List<WeeklyData>>
 
 
 }
@@ -59,13 +50,4 @@ interface IncomeDao {
     @Query("SELECT * FROM income_table WHERE income_id=:id")
     fun getIncomeById(id: Int): Flow<Income>
 
-    @Query(
-        """
-        SELECT SUM(income_Amount) AS amount,date AS date FROM income_table 
-        WHERE entry_date >= date('now','-7 day') GROUP BY entry_date 
-    """
-    )
-    fun getLast7DaysIncome(
-    ): Flow<List<WeeklyData>>
 }
-

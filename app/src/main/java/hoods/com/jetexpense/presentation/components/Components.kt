@@ -1,43 +1,14 @@
 package hoods.com.jetexpense.presentation.components
 
 import androidx.annotation.DrawableRes
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
 import hoods.com.jetexpense.R
 import hoods.com.jetexpense.presentation.home.HomeUiState
 import hoods.com.jetexpense.presentation.navigation.ExpenseDestination
@@ -57,9 +29,10 @@ import hoods.com.jetexpense.presentation.navigation.HomeDestination
 import hoods.com.jetexpense.presentation.navigation.IncomeDestination
 import hoods.com.jetexpense.presentation.navigation.JetExpenseDestination
 import hoods.com.jetexpense.util.Util
+import hoods.com.jetexpense.util.getColor
 import java.text.DecimalFormat
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
 @Composable
 fun JetExpAppBar(
     @DrawableRes icon: Int = R.drawable.ic_switch_off,
@@ -96,7 +69,88 @@ fun JetExpAppBar(
         })
 }
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun JetExpAppBar(
+    @DrawableRes icon: Int = R.drawable.ic_switch_off,
+    title: String,
+    transactionScreens: List<JetExpenseDestination>,
+    isDialogShown: Boolean,
+    onDialogChange: () -> Unit,
+    onScreenTypeChange: () -> Unit,
+    onSwitchClick: () -> Unit,
+    onMenuClick: () -> Unit,
+) {
+    TopAppBar(title = {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(text = title)
+            Spacer(modifier = Modifier.size(6.dp))
+            IconButton(
+                onClick = {
+                    // TODO: Launch Dialog
+                    onDialogChange.invoke()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowDown,
+                    contentDescription = null,
+                )
+            }
+            if (!isDialogShown) {
+                Popup(
+                    onDismissRequest = {
+                        onDialogChange.invoke()
+                    },
+                ) {
+                    Surface(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        Column {
+                            transactionScreens.forEach {
+                                Text(
+                                    text = it.pageTitle,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .clickable {
+                                            onScreenTypeChange.invoke()
+                                        },
+                                )
 
+                            }
+
+                        }
+                    }
+                }
+            }
+
+        }
+
+    },
+        navigationIcon = {
+            IconButton(onClick = { }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = null,
+                )
+            }
+        },
+        actions = {
+            AnimatedContent(targetState = icon, label = "") { iconRes ->
+                IconButton(onClick = { onSwitchClick() }) {
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = ""
+                    )
+                }
+            }
+            IconButton(onClick = { onMenuClick() }) {
+                Icon(
+                    imageVector = Icons.Default.Menu,
+                    contentDescription = ""
+                )
+            }
+        })
+}
 
 @Composable
 fun JetExpBottomBar(
@@ -233,14 +287,14 @@ fun IncomesCard(
         title = "Income",
         amount = account.totalIncome,
         onClickSeeAll = onClickSeeAll,
-        values = { it.incomeAmount },
-        colors = { it.color },
+        values = { it.incomeAmount.toFloat() },
+        colors = { getColor(it.incomeAmount.toFloat(),Util.incomeColor) },
         data = account.income
     ) { income ->
         IncomeRow(name = income.title,
             description = income.description,
-            amount = income.incomeAmount,
-            color = income.color,
+            amount = income.incomeAmount.toFloat(),
+            color = getColor(income.incomeAmount.toFloat(),Util.incomeColor),
             modifier = Modifier.clickable { onIncomeClick(income.id) }
         )
 
@@ -258,15 +312,15 @@ fun ExpenseCard(
         title = "Expense",
         amount = account.totalExpense,
         onClickSeeAll = onClickSeeAll,
-        values = { it.expenseAmount },
-        colors = { it.color },
+        values = { it.expenseAmount.toFloat() },
+        colors = {getColor(it.expenseAmount.toFloat(),Util.incomeColor) },
         data = account.expense
     ) {
         ExpenseRow(
             name = it.title,
             description = it.description,
-            amount = it.expenseAmount,
-            color = it.color,
+            amount = it.expenseAmount.toFloat(),
+            color = getColor(it.expenseAmount.toFloat(),Util.incomeColor),
             modifier = Modifier.clickable {
                 onExpenseClick.invoke(it.id)
             }
@@ -390,6 +444,7 @@ fun JetExpenseDivider(modifier: Modifier = Modifier) {
     Divider(color = MaterialTheme.colorScheme.background, thickness = 1.dp, modifier = modifier)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun <T> OverViewCard(
     title: String,
@@ -508,5 +563,6 @@ fun PrevBottomBar() {
     }
 }
 
+private val petExpDefaultPadding = 12.dp
 
 private const val SHOWN_ITEMS = 3

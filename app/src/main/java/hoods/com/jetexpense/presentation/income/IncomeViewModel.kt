@@ -6,9 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import hoods.com.jetexpense.data.local.models.mapIncome
+import hoods.com.jetexpense.data.local.models.Income
 import hoods.com.jetexpense.data.repository.Repository
-import hoods.com.jetexpense.presentation.models.IncomeP
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,7 +26,6 @@ class IncomeViewModel @Inject constructor(
         repository.income.collectLatest {
             incomeState = incomeState.copy(
                 incomes = it
-                    .map { income -> income.mapIncome() }
             )
         }
     }
@@ -40,5 +38,5 @@ class IncomeViewModel @Inject constructor(
 }
 
 data class IncomeState(
-    val incomes: List<IncomeP> = emptyList(),
+    val incomes: List<Income> = emptyList(),
 )

@@ -15,12 +15,14 @@ object CoroutineDispatcherModule {
     @Provides
     @Singleton
     @IoDispatcher
-    fun provideIoDispatcher(): CoroutineDispatcher = Dispatchers.IO
+    fun provideIoDispatcher(): CoroutineDispatcher =
+        Dispatchers.IO
 
     @Provides
     @Singleton
     @MainDispatcher
-    fun provideMainDispatcher(): CoroutineDispatcher = Dispatchers.Main
+    fun provideMainDispatcher(): CoroutineDispatcher =
+        Dispatchers.Main
 }
 
 @Qualifier
@@ -30,3 +32,16 @@ annotation class IoDispatcher
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class MainDispatcher
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -2,7 +2,6 @@ package hoods.com.jetexpense.data.repository
 
 import hoods.com.jetexpense.data.local.models.Expense
 import hoods.com.jetexpense.data.local.models.Income
-import hoods.com.jetexpense.data.local.models.WeeklyData
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
@@ -13,10 +12,6 @@ interface Repository {
 
     suspend fun insertExpense(expense: Expense)
 
-    fun getWeeklyData(): Flow<Pair<List<WeeklyData>, List<WeeklyData>>>
-
-    fun getExpenseByDays(): Flow<List<WeeklyData>>
-
     fun getIncomeById(id: Int): Flow<Income>
 
     fun getExpenseById(id: Int): Flow<Expense>
@@ -26,4 +21,3 @@ interface Repository {
     suspend fun deleteIncome(id: Int): Int
     suspend fun deleteExpense(id: Int): Int
 }
-

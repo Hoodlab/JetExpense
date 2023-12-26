@@ -1,16 +1,15 @@
 package hoods.com.jetexpense.presentation.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import hoods.com.jetexpense.presentation.home.HomeViewModel
 import hoods.com.jetexpense.presentation.expense.ExpenseScreen
 import hoods.com.jetexpense.presentation.expense.ExpenseViewModel
 import hoods.com.jetexpense.presentation.home.HomeScreen
+import hoods.com.jetexpense.presentation.home.HomeViewModel
 import hoods.com.jetexpense.presentation.income.IncomeScreen
 import hoods.com.jetexpense.presentation.income.IncomeViewModel
 import hoods.com.jetexpense.presentation.transaction.TransactionAssistedFactory
@@ -93,7 +92,6 @@ fun JetExpNavHost(
                     ?: ""
             val transId =
                 navBackStackEntry.arguments?.getInt(TransactionDestination.idTypeArg) ?: -1
-            Log.i("nav", "JetExpNavHost: $transType")
             TransactionScreen(
                 assistedFactory = assistedFactory,
                 transactionId = transId,

@@ -1,16 +1,12 @@
 package hoods.com.jetexpense.data.repository
 
-import android.util.Log
 import hoods.com.jetexpense.data.local.ExpenseDao
 import hoods.com.jetexpense.data.local.IncomeDao
 import hoods.com.jetexpense.data.local.models.Expense
 import hoods.com.jetexpense.data.local.models.Income
-import hoods.com.jetexpense.data.local.models.WeeklyData
 import hoods.com.jetexpense.di.IoDispatcher
-import hoods.com.jetexpense.presentation.transaction.TransactionViewModel.Companion.TAG
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -32,15 +28,6 @@ class RepositoryImpl @Inject constructor(
         expenseDao.insertExpense(expense)
     }
 
-    override fun getWeeklyData(): Flow<Pair<List<WeeklyData>, List<WeeklyData>>> =
-        combine(
-            incomeDao.getLast7DaysIncome(),
-            expenseDao.getLast7DaysExp()
-        ) { income, expense ->
-            Pair(income, expense)
-        }
-
-    override fun getExpenseByDays() = expenseDao.getLast7DaysExp()
 
     override fun getIncomeById(id: Int): Flow<Income> = incomeDao.getIncomeById(id)
 
@@ -55,13 +42,11 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun deleteIncome(id: Int) = withContext(dispatcher) {
-        val status = incomeDao.deleteIncome(id)
-        Log.i(TAG, "deleteIncome: $status")
+        incomeDao.deleteIncome(id)
     }
 
     override suspend fun deleteExpense(id: Int) = withContext(dispatcher) {
-        val status = expenseDao.deleteExpense(id)
-        Log.i(TAG, "deleteIncome: $status")
+        expenseDao.deleteExpense(id)
     }
 
 }

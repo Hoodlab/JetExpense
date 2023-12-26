@@ -6,7 +6,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import hoods.com.jetexpense.data.repository.Repository
 import hoods.com.jetexpense.data.repository.RepositoryImpl
-
 import javax.inject.Singleton
 
 @Module
