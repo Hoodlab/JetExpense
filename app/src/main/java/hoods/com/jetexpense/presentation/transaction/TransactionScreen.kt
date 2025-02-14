@@ -156,7 +156,7 @@ private fun TransactionDetails(
         Spacer(modifier = Modifier.height(12.dp))
         AnimatedVisibility(isExpenseTransaction) {
             LazyRow {
-                items(Category.values()) { category ->
+                items(Category.entries.toTypedArray()) { category ->
                     InputChip(
                         selected = category == state.category,
                         onClick = { transactionCallBack.onCategoryChange(category) },

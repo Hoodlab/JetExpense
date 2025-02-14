@@ -15,6 +15,8 @@ import hoods.com.jetexpense.presentation.income.IncomeViewModel
 import hoods.com.jetexpense.presentation.transaction.TransactionAssistedFactory
 import hoods.com.jetexpense.presentation.transaction.TransactionScreen
 
+// TODO: Use type safe navigation with compose
+
 @Composable
 fun JetExpNavHost(
     modifier: Modifier = Modifier,

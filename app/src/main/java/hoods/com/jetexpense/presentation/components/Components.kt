@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -51,7 +52,7 @@ fun JetExpAppBar(
             ) {
                 IconButton(onClick = { onNavigateUp.invoke() }) {
                     Icon(
-                        imageVector = Icons.Default.ArrowBack,
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = null,
                     )
                 }
@@ -129,7 +130,7 @@ fun JetExpAppBar(
         navigationIcon = {
             IconButton(onClick = { }) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Default.ArrowBack,
                     contentDescription = null,
                 )
             }
@@ -441,7 +442,7 @@ private fun AccountIndicator(color: Color, modifier: Modifier) {
 
 @Composable
 fun JetExpenseDivider(modifier: Modifier = Modifier) {
-    Divider(color = MaterialTheme.colorScheme.background, thickness = 1.dp, modifier = modifier)
+    HorizontalDivider(color = MaterialTheme.colorScheme.background, thickness = 1.dp, modifier = modifier)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

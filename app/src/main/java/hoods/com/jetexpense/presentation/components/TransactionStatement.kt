@@ -5,8 +5,8 @@ import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.rememberTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,18 +18,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.DismissDirection
-import androidx.compose.material3.DismissValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.SwipeToDismiss
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberDismissState
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -83,17 +85,49 @@ fun <T> TransactionStatement(
         }
 
         items(items, key = key) { item ->
-            val dismissState = rememberDismissState(
-                initialValue = DismissValue.Default
+            var isDismissed by remember { mutableStateOf(false) }
+            var showDismissBackground by remember { mutableStateOf(false) }
+
+            val dismissState = rememberSwipeToDismissBoxState(
+                confirmValueChange = { state ->
+                    when (state) {
+
+
+                        SwipeToDismissBoxValue.StartToEnd -> {
+                            isDismissed = true
+                        }
+
+                        else -> {
+                            isDismissed = false
+                            return@rememberSwipeToDismissBoxState false
+                        }
+                    }
+                    return@rememberSwipeToDismissBoxState true
+                }
             )
-            val isItemDismissed =
-                dismissState.isDismissed(DismissDirection.StartToEnd)
-            val isDismissedToEnd =
-                dismissState.targetValue == DismissValue.DismissedToEnd
-            SwipeToDismiss(
+
+            LaunchedEffect(isDismissed) {
+                if (isDismissed) {
+                    onItemSwiped.invoke(item)
+                }
+            }
+
+            LaunchedEffect(dismissState.progress) {
+                showDismissBackground = when {
+                    dismissState.progress < 0.5f -> {
+                        true
+                    }
+
+                    else -> {
+                        false
+                    }
+                }
+            }
+
+            SwipeToDismissBox(
                 state = dismissState,
-                background = {
-                    AnimatedVisibility(isDismissedToEnd) {
+                backgroundContent = {
+                    AnimatedVisibility(showDismissBackground) {
                         Surface(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -110,15 +144,12 @@ fun <T> TransactionStatement(
                         }
                     }
                 },
-                dismissContent = {
-                    if (isItemDismissed) {
-                        onItemSwiped.invoke(item)
-                    }
+                content = {
                     rows(item)
                 },
-                directions = setOf(DismissDirection.StartToEnd)
+                enableDismissFromStartToEnd = true,
+                enableDismissFromEndToStart = false
             )
-
         }
     }
 }
@@ -137,7 +168,7 @@ fun AnimatedCircle(
             }
     }
     val stroke = with(LocalDensity.current) { Stroke(5.dp.toPx()) }
-    val transition = updateTransition(transitionState = currentState, label = "Circle")
+    val transition = rememberTransition(transitionState = currentState, label = "Circle" )
     val angleOffset by transition.animateFloat(
         transitionSpec = {
             tween(
